@@ -1,0 +1,10 @@
+title: "퍼즐 워밍업 — 힌트로 풀어보는 두뇌 퍼즐"
+description: "수업 시작 전 뇌를 깨우는 퍼즐. 매주 새 퍼즐과 힌트 앱, 그 속의 수학·코딩 원리를 소개해요."
+baseurl: "/puzzle"
+url: "https://ssnkoster.github.io"
+markdown: kramdown
+permalink: /episodes/:year-:month-:day-:title/
+lang: ko
+future: false
+exclude:
+  - README.md
