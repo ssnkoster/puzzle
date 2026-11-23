@@ -20,7 +20,7 @@ layout: default
       <div class="episode-body">
         <span class="episode-date">{{ post.date | date: "%Y.%m.%d" }}</span>
         <h2 class="episode-title">{{ post.title }}</h2>
-        <p class="episode-excerpt">{{ post.excerpt | strip_html | truncate: 90 }}</p>
+        <p class="episode-excerpt">{{ post.lead | default: post.excerpt | strip_html | truncate: 90 }}</p>
         <span class="episode-readmore">읽으러 가기 →</span>
       </div>
     </a>

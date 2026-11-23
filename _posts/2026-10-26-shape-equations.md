@@ -2,19 +2,10 @@
 layout: post
 title: "2화. 도형이 숫자라고? — 연립방정식을 눈으로 푸는 법"
 date: 2026-10-26
+puzzle_include: pz/053.html
 thumbnail: /assets/episodes/053-shapes/thumb.png
+lead: "●, ▲, ★ 도형들이 줄마다 더해져 있고 합이 적혀 있어요. 마지막 줄의 합은 얼마일까요?"
 ---
-
-●, ▲, ★ 도형들이 줄마다 더해져 있고 합이 적혀 있어요. 마지막 줄의 합은 얼마일까요?
-
----
-
-## 지금 바로 풀어 보세요
-
-힌트 버튼을 누르면 한 번에 하나씩 힌트가 열려요. 마지막 힌트 뒤에는 정답이 풀이 과정과 함께 천천히 나타나요.
-
-<iframe class="puzzle-frame" src="/puzzle/demos/053-shapes/" title="퍼즐 053" loading="lazy"></iframe>
-<p class="puzzle-open"><a href="/puzzle/demos/053-shapes/">새 창에서 크게 열기 ↗</a></p>
 
 각 줄을 식으로 보고, **두 줄을 빼면** 무엇이 사라지는지 살펴보세요. 도형 하나의 값이 보이기 시작해요.
 

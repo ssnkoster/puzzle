@@ -1,0 +1,296 @@
+<div class="pz"><style>
+.pz {
+--navy: #1f2a44;
+--accent: #3f7ee0;
+--green: #2f9e58;
+--bg: #f2f6fb;
+--card: #ffffff;
+--line: #dde6f0;
+}
+.pz * { box-sizing: border-box; }
+.pz, .pz { height: 100%; overflow-x: hidden; }
+.pz {
+margin: 0;
+font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+background: var(--bg);
+color: var(--navy);
+}
+.pz .wrap { width: 100%; max-width: 780px; margin: 0 auto; padding: 0 clamp(10px,4vw,20px) 40px; }
+.pz .topBar { position: sticky; top: 0; z-index: 20; background: var(--bg); padding: 14px 0 10px; }
+.pz .badge {
+display: inline-block; background: var(--navy); color: white; font-weight: 700;
+font-size: 13px; letter-spacing: 0.05em; padding: 6px 14px; border-radius: 999px; margin-bottom: 8px;
+}
+.pz h1 { font-size: clamp(18px, 4.2vw, 22px); margin: 2px 0 2px; }
+.pz .sub { color: #5c6b7a; font-size: 13.5px; margin-bottom: 4px; }
+.pz .card {
+background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(31,42,68,0.05);
+}
+.pz .puzzleCard { position: sticky; top: var(--topbar-h, 92px); z-index: 15; }
+.pz svg { width: 100%; max-width: 480px; display:block; margin: 0 auto; height: auto; overflow: visible; }
+.pz .gearRim { fill: #c7cfda; stroke: #1f2a44; stroke-width: 9; stroke-dasharray: 7 6; transition: fill 0.5s ease; }
+.pz .gearBody { fill: #eef1f6; stroke: #1f2a44; stroke-width: 2; transition: fill 0.5s ease; }
+.pz .gearSpoke { fill: #1f2a44; opacity: 0.55; }
+.pz .gearHub { fill: #1f2a44; }
+.pz .gearRim.meshedCW { fill: #ffd8b8; }
+.pz .gearBody.meshedCW { fill: #ffe9d6; }
+.pz .gearRim.meshedCCW { fill: #c9def7; }
+.pz .gearBody.meshedCCW { fill: #e3eefb; }
+.pz .abLabel { font-size: 20px; font-weight: 800; fill: #1f2a44; }
+.pz g.spin-cw { animation-name: spinCW; animation-timing-function: linear; animation-iteration-count: infinite; }
+.pz g.spin-ccw { animation-name: spinCCW; animation-timing-function: linear; animation-iteration-count: infinite; }
+@keyframes spinCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes spinCCW { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+.pz #g7spin.pushRotate { transition: transform 1.6s cubic-bezier(.3,.8,.4,1); }
+.pz .statusBar {
+margin-top: 10px; text-align: center; font-size: 15px; font-weight: 700;
+min-height: 26px; color: var(--accent); transition: color 0.3s ease;
+}
+.pz .statusBar.good { color: var(--green); }
+.pz .formulaBubble { text-align:center; font-size: 16.5px; font-weight: 800; color: var(--accent); min-height: 26px; }
+.pz #ball { transition: cx 1.6s cubic-bezier(.4,1,.4,1), cy 0.6s ease 1.3s, r 0.5s ease 1.5s, opacity 0.5s ease 1.6s; }
+.pz #holeA { transition: opacity 0.4s ease; opacity: 0; }
+.pz #holeA.show { opacity: 1; }
+.pz .hintsCard { display: flex; flex-direction: column; }
+.pz .hintList { max-height: 30vh; overflow-y: auto; margin-bottom: 10px; scroll-behavior: smooth; }
+.pz .hint-item { display: flex; gap: 10px; padding: 12px 4px; border-bottom: 1px dashed var(--line); animation: fadeIn 0.4s ease; }
+.pz .hint-item:last-child { border-bottom: none; }
+.pz .hint-num {
+flex-shrink: 0; width: 24px; height: 24px; background: var(--accent); color: white;
+border-radius: 50%; display: flex; align-items: center; justify-content: center;
+font-size: 12.5px; font-weight: 700;
+}
+.pz .hint-text { font-size: 14.5px; line-height: 1.5; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.pz button {
+width: 100%; padding: 14px; font-size: 15.5px; font-weight: 700; border: none;
+border-radius: 12px; background: var(--navy); color: white; cursor: pointer; transition: opacity 0.2s;
+}
+.pz button:disabled { background: #a9b7c4; cursor: default; }
+.pz button:active { opacity: 0.85; }
+.pz .progress { display: flex; gap: 6px; margin-bottom: 12px; }
+.pz .dot { flex: 1; height: 5px; border-radius: 4px; background: var(--line); transition: background 0.3s; }
+.pz .dot.on { background: var(--accent); }
+.pz .resultCard {
+display:none; background: linear-gradient(135deg,#eef4ff,#e7eefc); border: 1px solid #cddcf7;
+border-radius: 18px; padding: 26px 18px; text-align:center; margin-bottom: 14px;
+opacity: 0; transform: translateY(8px) scale(0.97); transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.pz .resultCard.show { display:block; opacity:1; transform: translateY(0) scale(1); }
+.pz .resultCard .ans { font-size: 56px; font-weight: 800; color: var(--accent); margin: 8px 0; }
+.pz .resultCard .desc { font-size: 15px; color: #2c4d85; line-height: 1.7; }
+.pz .source { font-size: 12px; color: #94a2b3; text-align: center; margin-top: 4px; line-height: 1.6; }
+.pz{background:var(--bg);border-radius:16px;padding:12px 0 4px;margin:12px 0 24px;font-family:inherit;line-height:normal}
+.pz .wrap{padding:0 clamp(10px,3vw,16px) 16px}
+.pz .topBar{position:static}
+.pz .puzzleCard{top:76px}
+.pz h1{margin:2px 0}
+.pz .sub{margin:0}
+.pz button{font-family:inherit}
+.pz .hintList{max-height:26vh}
+.pz{height:auto}
+</style>
+<div class="wrap">
+<div class="topBar">
+<span class="badge">PUZZLE 008</span>
+<h1>⚙️ 톱니바퀴 방향 퍼즐</h1>
+<div class="sub">힌트를 하나씩 눌러보면서 구슬이 어느 쪽으로 굴러갈지 알아내보자!</div>
+</div>
+<div class="card puzzleCard">
+<svg viewBox="0 0 640 330" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+<path d="M0,0 L8,4 L0,8 Z" fill="#1f2a44"/>
+</marker>
+</defs>
+<g id="g1wrap" transform="translate(85,95)">
+<g id="g1spin">
+<circle r="48" class="gearRim" id="g1rim"/>
+<circle r="29.8" class="gearBody" id="g1body"/>
+<rect x="-3" y="-26.4" width="6" height="26.4" class="gearSpoke"/>
+</g>
+<circle r="7.7" class="gearHub"/>
+</g>
+<path d="M 61,41 A 26,26 0 0 1 103,29" fill="none" stroke="#1f2a44" stroke-width="4" marker-end="url(#arrowhead)"/>
+<g id="g2wrap" transform="translate(140.0,141.5)">
+<g id="g2spin">
+<circle r="24" class="gearRim" id="g2rim"/>
+<circle r="14.9" class="gearBody" id="g2body"/>
+<rect x="-3" y="-13.2" width="6" height="13.2" class="gearSpoke"/>
+</g>
+<circle r="3.8" class="gearHub"/>
+</g>
+<g id="g3wrap" transform="translate(147.3,213.1)">
+<g id="g3spin">
+<circle r="48" class="gearRim" id="g3rim"/>
+<circle r="29.8" class="gearBody" id="g3body"/>
+<rect x="-3" y="-26.4" width="6" height="26.4" class="gearSpoke"/>
+</g>
+<circle r="7.7" class="gearHub"/>
+</g>
+<g id="g4wrap" transform="translate(241.5,194.7)">
+<g id="g4spin">
+<circle r="48" class="gearRim" id="g4rim"/>
+<circle r="29.8" class="gearBody" id="g4body"/>
+<rect x="-3" y="-26.4" width="6" height="26.4" class="gearSpoke"/>
+</g>
+<circle r="7.7" class="gearHub"/>
+</g>
+<g id="g5wrap" transform="translate(305.7,162.1)">
+<g id="g5spin">
+<circle r="24" class="gearRim" id="g5rim"/>
+<circle r="14.9" class="gearBody" id="g5body"/>
+<rect x="-3" y="-13.2" width="6" height="13.2" class="gearSpoke"/>
+</g>
+<circle r="3.8" class="gearHub"/>
+</g>
+<g id="g6wrap" transform="translate(351.6,148.0)">
+<g id="g6spin">
+<circle r="24" class="gearRim" id="g6rim"/>
+<circle r="14.9" class="gearBody" id="g6body"/>
+<rect x="-3" y="-13.2" width="6" height="13.2" class="gearSpoke"/>
+</g>
+<circle r="3.8" class="gearHub"/>
+</g>
+<g id="g7wrap" transform="translate(419.7,124.7)">
+<g id="g7spin">
+<circle r="48" class="gearRim" id="g7rim"/>
+<circle r="29.8" class="gearBody" id="g7body"/>
+<rect x="-3" y="-26.4" width="6" height="26.4" class="gearSpoke"/>
+<line x1="21.0" y1="36.4" x2="55.0" y2="95.3" stroke="#1f2a44" stroke-width="6" stroke-linecap="round" id="peg2"/><line x1="-21.0" y1="36.4" x2="-55.0" y2="95.3" stroke="#1f2a44" stroke-width="6" stroke-linecap="round" id="peg1"/>
+</g>
+<circle r="7.7" class="gearHub"/>
+</g>
+<rect x="20" y="256.7" width="209.7" height="18" fill="#1f2a44"/>
+<ellipse cx="269.7" cy="265.7" rx="26" ry="9" fill="#0d1424" id="holeA"/>
+<text x="269.7" y="290.7" text-anchor="middle" class="abLabel">A</text>
+<rect x="299.7" y="256.7" width="80.0" height="18" fill="#1f2a44"/>
+<rect x="374.7" y="256.7" width="90" height="18" fill="#1f2a44"/>
+<rect x="489.7" y="256.7" width="120" height="18" fill="#1f2a44"/>
+<text x="507.7" y="290.7" text-anchor="middle" class="abLabel">B</text>
+<circle cx="419.7" cy="244.7" r="15" fill="#9aa3ad" stroke="#1f2a44" stroke-width="3" id="ball"/>
+</svg>
+<div class="formulaBubble" id="formulaBubble"></div>
+<div class="statusBar" id="statusBar"></div>
+</div>
+<div class="resultCard" id="resultCard">
+<div style="font-size:14px;font-weight:700;color:#2c4d85;">정답은</div>
+<div class="ans">A</div>
+<div class="desc">톱니바퀴가 6번 맞물리면서(짝수 번) 마지막 톱니바퀴는 처음과 같은 시계방향으로 돌아요.<br>톱니바퀴에 붙어서 함께 도는 막대가 아래로 내려오면서 구슬을 왼쪽(A) 구멍으로 밀어 넣어요.</div>
+</div>
+<div class="card hintsCard">
+<div class="progress" id="progress"></div>
+<div class="hintList" id="hintList"></div>
+<button id="nextBtn" onclick="showNextHint()">💡 힌트 보기 (1/5)</button>
+</div>
+<div class="source">
+출처: 《멘사 창의력 퍼즐 Mensa Mind Maze Quest》 존 브렘너 지음 · 권태은 옮김 · 보누스 (PUZZLE 008)
+</div>
+</div>
+<script>
+const hints = [
+  "왼쪽 톱니바퀴가 화살표 방향(시계방향)으로 돌면, 맞물린 다음 톱니바퀴는 반대 방향(반시계방향)으로 돌아. 톱니바퀴는 서로 맞물릴 때마다 방향이 바뀌어.",
+  "왼쪽부터 오른쪽까지 톱니바퀴가 모두 몇 개인지, 그리고 서로 맞물리는 지점이 몇 번 있는지 세어보자.",
+  "맞물리는 횟수가 짝수번이면 마지막 톱니바퀴는 처음과 '같은' 방향으로, 홀수번이면 '반대' 방향으로 돌아. 이 톱니바퀴 열은 몇 번 맞물리는지 세어서 마지막 톱니바퀴의 회전 방향을 알아내보자.",
+  "마지막 톱니바퀴에는 막대(핀) 두 개가 톱니바퀴에 단단히 붙어 있어서, 톱니바퀴가 도는 대로 함께 돌아가. 톱니바퀴가 도는 방향에 따라 어느 쪽 막대가 아래로 내려와 구슬 쪽을 쓸고 지나갈지 생각해보자.",
+  "그 막대가 구슬을 왼쪽(A)으로 밀지, 오른쪽(B)으로 밀지 머릿속으로 천천히 굴려보자!"
+];
+
+let shown = 0;
+const listEl = document.getElementById('hintList');
+const btn = document.getElementById('nextBtn');
+const progressEl = document.getElementById('progress');
+
+for (let i = 0; i < hints.length; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  progressEl.appendChild(d);
+}
+
+function showNextHint() {
+  if (shown >= hints.length) return;
+  const item = document.createElement('div');
+  item.className = 'hint-item';
+  item.innerHTML = `<div class="hint-num">${shown+1}</div><div class="hint-text">${hints[shown]}</div>`;
+  listEl.appendChild(item);
+  progressEl.children[shown].classList.add('on');
+  shown++;
+  listEl.scrollTop = listEl.scrollHeight;
+  if (shown < hints.length) {
+    btn.textContent = `💡 힌트 보기 (${shown+1}/${hints.length})`;
+  } else {
+    btn.textContent = '힌트를 모두 확인했어요 ✅';
+    btn.disabled = true;
+    runAnimation();
+  }
+}
+
+function wait(ms) { return new Promise(res => setTimeout(res, ms)); }
+function setStatus(text, cls) {
+  const s = document.getElementById('statusBar');
+  s.textContent = text;
+  s.className = 'statusBar' + (cls ? (' ' + cls) : '');
+}
+function setFormula(text) { document.getElementById('formulaBubble').textContent = text; }
+
+const chain = ['g1','g2','g3','g4','g5','g6','g7'];
+const dirs = ['CW','CCW','CW','CCW','CW','CCW','CW'];
+const dirKo = {CW:'시계방향', CCW:'반시계방향'};
+const periods = {g1: 3.0, g2: 1.5, g3: 3.0, g4: 3.0, g5: 1.5, g6: 1.5, g7: 3.0};
+
+async function runAnimation() {
+  await wait(600);
+  setStatus('첫 번째 톱니바퀴가 돌기 시작해요', 'blue');
+  await wait(1500);
+
+  for (let i=0;i<chain.length;i++) {
+    const spin = document.getElementById(chain[i]+'spin');
+    const rim = document.getElementById(chain[i]+'rim');
+    const body = document.getElementById(chain[i]+'body');
+    const meshClass = dirs[i]==='CW' ? 'meshedCW' : 'meshedCCW';
+
+    rim.classList.add(meshClass);
+    body.classList.add(meshClass);
+    await wait(350);
+    spin.style.animationDuration = periods[chain[i]] + 's';
+    spin.classList.add(dirs[i]==='CW' ? 'spin-cw' : 'spin-ccw');
+
+    setFormula(`${i+1}번 톱니바퀴: ${dirKo[dirs[i]]} (${dirs[i]})`);
+    setStatus(i===0 ? '여기서 출발!' : `${i}번과 맞물리며 색이 바뀌고, 반대로 돌기 시작해요`, 'blue');
+    await wait(1500);
+  }
+
+  setFormula('');
+  setStatus('총 6번 맞물렸어요 (짝수) → 마지막 톱니바퀴는 처음과 같은 시계방향!', 'good');
+  await wait(2800);
+
+  setStatus('막대가 톱니바퀴와 함께 돌면서 구슬을 밀어낼 거예요', 'blue');
+  await wait(2200);
+
+  // Stop infinite spin on gear7, snap to a known angle, then rotate further (still CW)
+  // while the ball rolls left in sync — as if the attached rod pushes it.
+  const g7spin = document.getElementById('g7spin');
+  g7spin.classList.remove('spin-cw');
+  g7spin.style.animation = 'none';
+  g7spin.style.transform = 'rotate(0deg)';
+  void g7spin.offsetWidth;
+  g7spin.classList.add('pushRotate');
+
+  document.getElementById('holeA').classList.add('show');
+  const ball = document.getElementById('ball');
+
+  await wait(150);
+  g7spin.style.transform = 'rotate(100deg)';
+  ball.setAttribute('cx', parseFloat(ball.getAttribute('cx')) - 150);
+  await wait(1700);
+
+  ball.setAttribute('cy', parseFloat(ball.getAttribute('cy')) + 10);
+  ball.setAttribute('r', 8);
+  ball.style.opacity = '0.35';
+  setStatus('구슬이 A 구멍으로 쏙 들어갔어요! 🎉', 'good');
+  await wait(2400);
+
+  document.getElementById('resultCard').classList.add('show');
+}
+</script></div>

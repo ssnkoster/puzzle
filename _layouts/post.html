@@ -7,6 +7,8 @@ layout: default
     <div class="post-date">{{ page.date | date: "%Y년 %-m월 %-d일" }}</div>
     <h1 class="post-title">{{ page.title }}</h1>
   </header>
+  {% if page.lead %}<p class="post-lead">{{ page.lead }}</p>{% endif %}
+  {% if page.puzzle_include %}{% include {{ page.puzzle_include }} %}{% endif %}
   <div class="post-content">
     {{ content }}
   </div>

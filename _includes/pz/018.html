@@ -1,0 +1,384 @@
+<div class="pz"><style>
+.pz {
+--navy: #1f2a44;
+--accent: #e07a3f;
+--accent2: #3f96e0;
+--green: #2f9e58;
+--bg: #faf7f2;
+--card: #ffffff;
+--line: #e6e1d8;
+}
+.pz * { box-sizing: border-box; }
+.pz, .pz { height: 100%; overflow-x: hidden; }
+.pz {
+margin: 0;
+font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+background: var(--bg);
+color: var(--navy);
+}
+.pz .wrap { width: 100%; max-width: 760px; margin: 0 auto; padding: 0 clamp(10px,4vw,20px) 40px; }
+.pz .topBar {
+position: sticky; top: 0; z-index: 20;
+background: var(--bg);
+padding: 14px 0 10px;
+}
+.pz .badge {
+display: inline-block;
+background: var(--navy);
+color: white;
+font-weight: 700;
+font-size: 13px;
+letter-spacing: 0.05em;
+padding: 6px 14px;
+border-radius: 999px;
+margin-bottom: 8px;
+}
+.pz h1 { font-size: clamp(18px, 4.2vw, 22px); margin: 2px 0 2px; }
+.pz .sub { color: #6b6458; font-size: 13.5px; margin-bottom: 4px; }
+.pz .card {
+background: var(--card);
+border: 1px solid var(--line);
+border-radius: 16px;
+padding: 16px;
+margin-bottom: 14px;
+box-shadow: 0 2px 10px rgba(31,42,68,0.05);
+}
+.pz .puzzleCard { position: sticky; top: var(--topbar-h, 92px); z-index: 15; }
+.pz .hexrow { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.pz .hexbox { width: 100%; max-width: 340px; text-align: center; transition: opacity 0.4s ease; }
+.pz .hexbox.dim { opacity: 0.4; }
+.pz .hexbox .label { font-size: 12.5px; color: #8a8477; font-weight: 700; margin-bottom: 2px; }
+.pz svg { width: 100%; height: auto; overflow: visible; }
+.pz text.num { font-size: 25px; font-weight: 700; fill: #1f2a44; font-family: inherit; transition: opacity 0.25s ease; }
+.pz text.qmark { fill: #e07a3f; font-size: 29px; }
+.pz .wedge { transition: fill 0.5s ease; }
+.pz .wedge.active { fill: rgba(224,122,63,0.30); }
+.pz .wedge.active2 { fill: rgba(63,150,224,0.30); }
+.pz .wedge.confirmed { fill: rgba(47,158,88,0.22); }
+.pz .statusBar {
+margin-top: 6px;
+text-align: center;
+font-size: 15px;
+font-weight: 700;
+min-height: 26px;
+color: var(--accent);
+transition: color 0.3s ease;
+}
+.pz .statusBar.good { color: var(--green); }
+.pz .statusBar.blue { color: var(--accent2); }
+.pz .formulaBubble {
+text-align: center;
+font-size: 17px;
+font-weight: 800;
+color: var(--accent);
+min-height: 26px;
+}
+@keyframes popIn {
+0% { opacity: 0; transform: scale(0.4); }
+60% { opacity: 1; transform: scale(1.3); }
+100% { opacity: 1; transform: scale(1); }
+}
+.pz .pop { animation: popIn 0.6s ease; }
+.pz .hintsCard { display: flex; flex-direction: column; }
+.pz .hintList {
+max-height: 30vh;
+overflow-y: auto;
+margin-bottom: 10px;
+scroll-behavior: smooth;
+}
+.pz .hint-item {
+display: flex;
+gap: 10px;
+padding: 12px 4px;
+border-bottom: 1px dashed var(--line);
+animation: fadeIn 0.4s ease;
+}
+.pz .hint-item:last-child { border-bottom: none; }
+.pz .hint-num {
+flex-shrink: 0;
+width: 24px; height: 24px;
+background: var(--accent);
+color: white;
+border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 12.5px; font-weight: 700;
+}
+.pz .hint-text { font-size: 14.5px; line-height: 1.5; }
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(6px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.pz button {
+width: 100%;
+padding: 14px;
+font-size: 15.5px;
+font-weight: 700;
+border: none;
+border-radius: 12px;
+background: var(--navy);
+color: white;
+cursor: pointer;
+transition: opacity 0.2s;
+}
+.pz button:disabled { background: #b9b2a5; cursor: default; }
+.pz button:active { opacity: 0.85; }
+.pz .progress { display: flex; gap: 6px; margin-bottom: 12px; }
+.pz .dot { flex: 1; height: 5px; border-radius: 4px; background: var(--line); transition: background 0.3s; }
+.pz .dot.on { background: var(--accent); }
+.pz .resultCard {
+display:none;
+background: linear-gradient(135deg,#fff6ea,#fef1e3);
+border: 1px solid #f0d9b5;
+border-radius: 18px;
+padding: 26px 18px;
+text-align:center;
+margin-bottom: 14px;
+opacity: 0;
+transform: translateY(8px) scale(0.97);
+transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.pz .resultCard.show { display:block; opacity:1; transform: translateY(0) scale(1); }
+.pz .resultCard .ans { font-size: 56px; font-weight: 800; color: var(--accent); margin: 8px 0; }
+.pz .resultCard .desc { font-size: 15px; color: #7a5a2c; line-height: 1.7; }
+.pz .source {
+font-size: 12px; color: #9a9284; text-align: center; margin-top: 4px; line-height: 1.6;
+}
+.pz{background:var(--bg);border-radius:16px;padding:12px 0 4px;margin:12px 0 24px;font-family:inherit;line-height:normal}
+.pz .wrap{padding:0 clamp(10px,3vw,16px) 16px}
+.pz .topBar{position:static}
+.pz .puzzleCard{top:76px}
+.pz h1{margin:2px 0}
+.pz .sub{margin:0}
+.pz button{font-family:inherit}
+.pz .hintList{max-height:26vh}
+.pz{height:auto}
+</style>
+<div class="wrap">
+<div class="topBar">
+<span class="badge">PUZZLE 018</span>
+<h1>🔷 육각형 숫자 퍼즐</h1>
+<div class="sub">힌트를 하나씩 눌러보면서 스스로 규칙을 찾아보자!</div>
+</div>
+<div class="card puzzleCard">
+<div class="hexrow">
+<div class="hexbox" id="hexbox1">
+<div class="label">① 완성된 육각형</div>
+<svg viewBox="0 0 300 290" xmlns="http://www.w3.org/2000/svg">
+<path class="wedge" id="h1-top" d="M150,145 L87.5,36.75 L212.5,36.75 Z" fill="transparent"/>
+<path class="wedge" id="h1-upper_right" d="M150,145 L212.5,36.75 L275.0,145.0 Z" fill="transparent"/>
+<path class="wedge" id="h1-lower_right" d="M150,145 L275.0,145.0 L212.5,253.25 Z" fill="transparent"/>
+<path class="wedge" id="h1-bottom" d="M150,145 L212.5,253.25 L87.5,253.25 Z" fill="transparent"/>
+<path class="wedge" id="h1-lower_left" d="M150,145 L87.5,253.25 L25.0,145.0 Z" fill="transparent"/>
+<path class="wedge" id="h1-upper_left" d="M150,145 L25.0,145.0 L87.5,36.75 Z" fill="transparent"/>
+<polygon points="275.0,145.0 212.5,36.75 87.5,36.75 25.0,145.0 87.5,253.25 212.5,253.25" fill="none" stroke="#1f2a44" stroke-width="3"/>
+<line x1="87.5" y1="36.75" x2="212.5" y2="253.25" stroke="#1f2a44" stroke-width="3"/>
+<line x1="212.5" y1="36.75" x2="87.5" y2="253.25" stroke="#1f2a44" stroke-width="3"/>
+<line x1="25.0" y1="145.0" x2="275.0" y2="145.0" stroke="#1f2a44" stroke-width="3"/>
+<text x="150.0" y="76.8" text-anchor="middle" class="num" id="h1-top-text">20</text>
+<text x="216.8" y="115.4" text-anchor="middle" class="num" id="h1-upper_right-text">52</text>
+<text x="216.8" y="192.6" text-anchor="middle" class="num" id="h1-lower_right-text">23</text>
+<text x="150.0" y="231.2" text-anchor="middle" class="num" id="h1-bottom-text">58</text>
+<text x="83.2" y="192.6" text-anchor="middle" class="num" id="h1-lower_left-text">26</text>
+<text x="83.2" y="115.4" text-anchor="middle" class="num" id="h1-upper_left-text">64</text>
+</svg>
+</div>
+<div class="hexbox" id="hexbox2">
+<div class="label">② 물음표를 채워야 할 육각형</div>
+<svg viewBox="0 0 300 290" xmlns="http://www.w3.org/2000/svg">
+<path class="wedge" id="h2-top" d="M150,145 L87.5,36.75 L212.5,36.75 Z" fill="transparent"/>
+<path class="wedge" id="h2-upper_right" d="M150,145 L212.5,36.75 L275.0,145.0 Z" fill="transparent"/>
+<path class="wedge" id="h2-lower_right" d="M150,145 L275.0,145.0 L212.5,253.25 Z" fill="transparent"/>
+<path class="wedge" id="h2-bottom" d="M150,145 L212.5,253.25 L87.5,253.25 Z" fill="transparent"/>
+<path class="wedge" id="h2-lower_left" d="M150,145 L87.5,253.25 L25.0,145.0 Z" fill="transparent"/>
+<path class="wedge" id="h2-upper_left" d="M150,145 L25.0,145.0 L87.5,36.75 Z" fill="transparent"/>
+<polygon points="275.0,145.0 212.5,36.75 87.5,36.75 25.0,145.0 87.5,253.25 212.5,253.25" fill="none" stroke="#1f2a44" stroke-width="3"/>
+<line x1="87.5" y1="36.75" x2="212.5" y2="253.25" stroke="#1f2a44" stroke-width="3"/>
+<line x1="212.5" y1="36.75" x2="87.5" y2="253.25" stroke="#1f2a44" stroke-width="3"/>
+<line x1="25.0" y1="145.0" x2="275.0" y2="145.0" stroke="#1f2a44" stroke-width="3"/>
+<text x="150.0" y="76.8" text-anchor="middle" class="num" id="h2-top-text">15</text>
+<text x="216.8" y="115.4" text-anchor="middle" class="num qmark" id="h2-upper_right-text">?</text>
+<text x="216.8" y="192.6" text-anchor="middle" class="num" id="h2-lower_right-text">18</text>
+<text x="150.0" y="231.2" text-anchor="middle" class="num" id="h2-bottom-text">48</text>
+<text x="83.2" y="192.6" text-anchor="middle" class="num" id="h2-lower_left-text">21</text>
+<text x="83.2" y="115.4" text-anchor="middle" class="num" id="h2-upper_left-text">54</text>
+</svg>
+</div>
+</div>
+<div class="formulaBubble" id="formulaBubble"></div>
+<div class="statusBar" id="statusBar"></div>
+</div>
+<div class="resultCard" id="resultCard">
+<div style="font-size:14px;font-weight:700;color:#7a5a2c;">정답은</div>
+<div class="ans">42</div>
+<div class="desc">맨 위 숫자에서 시계방향으로<br>(+6)×2 와 (−6)÷2 를 번갈아 적용하는 규칙이<br>두 육각형 모두에 똑같이 적용돼요.</div>
+</div>
+<div class="card hintsCard">
+<div class="progress" id="progress"></div>
+<div class="hintList" id="hintList"></div>
+<button id="nextBtn" onclick="showNextHint()">💡 힌트 보기 (1/5)</button>
+</div>
+<div class="source">
+출처: 《멘사 창의력 퍼즐 Mensa Mind Maze Quest》 존 브렘너 지음 · 권태은 옮김 · 보누스 (PUZZLE 018)
+</div>
+</div>
+<script>
+const hints = [
+  "왼쪽(완성된) 육각형의 맨 위 숫자 20에서 출발해서, 시계방향으로 한 칸씩 이동하며 숫자가 어떻게 바뀌는지 관찰해보자. (20 → 52 → 23 → 58 → 26 → 64)",
+  "20에서 52로 갈 때 어떤 계산을 했을지 생각해보자. 힌트: 어떤 수를 더한 다음, 어떤 수를 곱했어. (20 + ? ) × ? = 52",
+  "52에서 23으로 갈 때는 반대로, 어떤 수를 뺀 다음 어떤 수로 나눴을 거야. (52 − ? ) ÷ ? = 23. 앞에서 찾은 두 숫자와 같은 숫자가 쓰였는지 확인해보자.",
+  "이 두 가지 계산(더하고 곱하기 / 빼고 나누기)이 시계방향으로 번갈아 반복돼. 23→58, 58→26, 26→64 에도 같은 규칙이 맞는지 직접 계산해서 확인해보자.",
+  "규칙을 찾았다면, 오른쪽(물음표) 육각형에도 똑같이 적용해보자. 맨 위 숫자 15에서 시계방향으로 한 칸 이동하면 바로 물음표 칸이야. 15에 규칙의 '첫 번째 계산(더하고 곱하기)'을 적용해보자."
+];
+
+let shown = 0;
+const listEl = document.getElementById('hintList');
+const btn = document.getElementById('nextBtn');
+const progressEl = document.getElementById('progress');
+
+for (let i = 0; i < hints.length; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  progressEl.appendChild(d);
+}
+
+function showNextHint() {
+  if (shown >= hints.length) return;
+  const item = document.createElement('div');
+  item.className = 'hint-item';
+  item.innerHTML = `<div class="hint-num">${shown+1}</div><div class="hint-text">${hints[shown]}</div>`;
+  listEl.appendChild(item);
+  progressEl.children[shown].classList.add('on');
+  shown++;
+  listEl.scrollTop = listEl.scrollHeight;
+  if (shown < hints.length) {
+    btn.textContent = `💡 힌트 보기 (${shown+1}/${hints.length})`;
+  } else {
+    btn.textContent = '힌트를 모두 확인했어요 ✅';
+    btn.disabled = true;
+    runFullAnimation();
+  }
+}
+
+function wait(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+function setStatus(text, cls) {
+  const s = document.getElementById('statusBar');
+  s.textContent = text;
+  s.className = 'statusBar' + (cls ? (' ' + cls) : '');
+}
+function setFormula(text) {
+  document.getElementById('formulaBubble').textContent = text;
+}
+function wedge(id) { return document.getElementById(id); }
+function textEl(id) { return document.getElementById(id); }
+
+async function walkHexagon(prefix, sequenceValues, opTexts, dim) {
+  // sequenceValues: array of 6 [key, value] pairs in clockwise order starting at top
+  // opTexts: array of 5 strings describing transition i -> i+1
+  const first = sequenceValues[0];
+  wedge(`${prefix}-${first[0]}`).classList.add('active');
+  setStatus(`${first[1]} 에서 시작!`, 'blue');
+  setFormula('');
+  await wait(1900);
+
+  for (let i = 0; i < opTexts.length; i++) {
+    const [fromKey, fromVal] = sequenceValues[i];
+    const [toKey, toVal] = sequenceValues[i+1];
+    setFormula(opTexts[i]);
+    await wait(1600);
+    wedge(`${prefix}-${fromKey}`).classList.remove('active');
+    wedge(`${prefix}-${fromKey}`).classList.add('confirmed');
+    wedge(`${prefix}-${toKey}`).classList.add('active');
+    setStatus(`다음 칸: ${toVal}`, 'blue');
+    await wait(1500);
+  }
+  const last = sequenceValues[sequenceValues.length-1];
+  wedge(`${prefix}-${last[0]}`).classList.remove('active');
+  wedge(`${prefix}-${last[0]}`).classList.add('confirmed');
+  await wait(600);
+}
+
+async function runFullAnimation() {
+  await wait(500);
+  document.getElementById('hexbox2').classList.add('dim');
+  setStatus('먼저 완성된 육각형에서 규칙을 확인해볼게요', 'blue');
+  await wait(1800);
+
+  await walkHexagon('h1', [
+    ['top','20'], ['upper_right','52'], ['lower_right','23'],
+    ['bottom','58'], ['lower_left','26'], ['upper_left','64']
+  ], [
+    '(20 + 6) × 2 = 52',
+    '(52 − 6) ÷ 2 = 23',
+    '(23 + 6) × 2 = 58',
+    '(58 − 6) ÷ 2 = 26',
+    '(26 + 6) × 2 = 64',
+  ]);
+
+  setFormula('');
+  setStatus('규칙을 찾았어요! (+6)×2 와 (−6)÷2 를 번갈아 반복 🔁', 'good');
+  await wait(2400);
+
+  document.getElementById('hexbox1').classList.remove('dim');
+  document.getElementById('hexbox1').classList.add('dim');
+  document.getElementById('hexbox2').classList.remove('dim');
+  setStatus('이제 같은 규칙을 물음표 육각형에 적용해볼게요', 'blue');
+  await wait(2000);
+
+  // Phase 2: hexagon2, start at top(15), reveal upper_right as 42, then confirm rest
+  wedge('h2-top').classList.add('active');
+  setStatus('15 에서 시작!', 'blue');
+  setFormula('');
+  await wait(1800);
+
+  setFormula('(15 + 6) × 2 = ?');
+  await wait(1700);
+  setFormula('(15 + 6) × 2 = 42');
+  const qText = textEl('h2-upper_right-text');
+  qText.style.opacity = 0;
+  await wait(350);
+  qText.textContent = '42';
+  qText.classList.remove('qmark');
+  qText.classList.add('pop');
+  qText.style.opacity = 1;
+  wedge('h2-top').classList.remove('active');
+  wedge('h2-top').classList.add('confirmed');
+  wedge('h2-upper_right').classList.add('active2');
+  setStatus('물음표는 42!', 'good');
+  await wait(2400);
+
+  await walkHexagon2Confirm([
+    ['upper_right','42'], ['lower_right','18'], ['bottom','48'],
+    ['lower_left','21'], ['upper_left','54']
+  ], [
+    '(42 − 6) ÷ 2 = 18 ✅',
+    '(18 + 6) × 2 = 48 ✅',
+    '(48 − 6) ÷ 2 = 21 ✅',
+    '(21 + 6) × 2 = 54 ✅',
+  ]);
+
+  setFormula('');
+  setStatus('모든 칸이 규칙과 딱 맞아요! 🎉', 'good');
+  document.getElementById('hexbox1').classList.remove('dim');
+  await wait(1600);
+
+  document.getElementById('resultCard').classList.add('show');
+}
+
+async function walkHexagon2Confirm(sequenceValues, opTexts) {
+  for (let i = 0; i < opTexts.length; i++) {
+    const [fromKey] = sequenceValues[i];
+    const [toKey, toVal] = sequenceValues[i+1];
+    setFormula(opTexts[i]);
+    await wait(1700);
+    wedge(`h2-${fromKey}`).classList.remove('active2');
+    wedge(`h2-${fromKey}`).classList.add('confirmed');
+    wedge(`h2-${toKey}`).classList.add('active2');
+    setStatus(`${toVal} 확인!`, 'good');
+    await wait(1300);
+  }
+  const last = sequenceValues[sequenceValues.length-1];
+  wedge(`h2-${last[0]}`).classList.remove('active2');
+  wedge(`h2-${last[0]}`).classList.add('confirmed');
+}
+</script></div>

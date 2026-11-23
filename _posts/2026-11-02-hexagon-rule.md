@@ -2,19 +2,10 @@
 layout: post
 title: "3화. 육각형 속 숫자의 비밀 — 규칙을 찾는 두 가지 방법"
 date: 2026-11-02
+puzzle_include: pz/018.html
 thumbnail: /assets/episodes/018-hexagon/thumb.png
+lead: "완성된 육각형의 숫자들은 어떤 규칙으로 이어져 있어요. 같은 규칙으로 두 번째 육각형의 물음표를 채워 보세요."
 ---
-
-완성된 육각형의 숫자들은 어떤 규칙으로 이어져 있어요. 같은 규칙으로 두 번째 육각형의 물음표를 채워 보세요.
-
----
-
-## 지금 바로 풀어 보세요
-
-힌트 버튼을 누르면 한 번에 하나씩 힌트가 열려요. 마지막 힌트 뒤에는 정답이 풀이 과정과 함께 천천히 나타나요.
-
-<iframe class="puzzle-frame" src="/puzzle/demos/018-hexagon/" title="퍼즐 018" loading="lazy"></iframe>
-<p class="puzzle-open"><a href="/puzzle/demos/018-hexagon/">새 창에서 크게 열기 ↗</a></p>
 
 이웃한 숫자끼리 어떤 계산을 하면 다음 숫자가 나올까요? 계산이 **번갈아** 바뀌는지도 살펴보세요.
 

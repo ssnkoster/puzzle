@@ -1,0 +1,352 @@
+<div class="pz"><style>
+.pz {
+--navy: #1f2a44;
+--accent: #c9542e;
+--green: #2f9e58;
+--red: #d1483f;
+--bg: #fbf5f1;
+--card: #ffffff;
+--line: #ece0d6;
+}
+.pz * { box-sizing: border-box; }
+.pz, .pz { height: 100%; overflow-x: hidden; }
+.pz {
+margin: 0;
+font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+background: var(--bg);
+color: var(--navy);
+}
+.pz .wrap { width: 100%; max-width: 760px; margin: 0 auto; padding: 0 clamp(10px,4vw,20px) 40px; }
+.pz .topBar { position: sticky; top: 0; z-index: 20; background: var(--bg); padding: 14px 0 10px; }
+.pz .badge {
+display: inline-block; background: var(--navy); color: white; font-weight: 700;
+font-size: 13px; letter-spacing: 0.05em; padding: 6px 14px; border-radius: 999px; margin-bottom: 8px;
+}
+.pz h1 { font-size: clamp(18px, 4.2vw, 22px); margin: 2px 0 2px; }
+.pz .sub { color: #6b5c50; font-size: 13.5px; margin-bottom: 4px; }
+.pz .card {
+background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(31,42,68,0.05);
+}
+.pz .puzzleCard { position: sticky; top: var(--topbar-h, 92px); z-index: 15; }
+.pz svg { width: 100%; max-width: 380px; display:block; margin: 0 auto; height: auto; overflow: visible; }
+.pz .tile { fill: #f1e6db; stroke: #1f2a44; stroke-width: 2.5; transition: fill 0.4s ease, stroke 0.4s ease; }
+.pz .tile.active { fill: #fbdcc7; }
+.pz .tile.good { fill: #d9f0e0; }
+.pz .tile.possible { stroke: var(--green); fill: #eafaf0; }
+.pz .tile.impossible { opacity: 0.32; }
+.pz .tilenum { font-size: 26px; font-weight: 800; fill: #1f2a44; transition: opacity 0.3s ease; }
+.pz .ruleNote {
+text-align:center; font-size: 13.5px; color:#8a7a6a; margin-top: 6px;
+opacity: 0; transition: opacity 0.5s ease; min-height: 1px;
+}
+.pz .ruleNote.show { opacity: 1; }
+.pz .trialRow { display:flex; justify-content:center; gap: 10px; margin-top: 12px; flex-wrap: wrap; min-height: 1px; }
+.pz .trialBox {
+background: #f1e6db; border: 2px solid var(--line); border-radius: 10px;
+padding: 8px 14px; font-size: 15px; font-weight: 700; color: #7a6a5c;
+opacity: 0; transform: translateY(6px);
+animation: fadeIn 0.5s ease forwards;
+}
+.pz .trialBox .endTag { font-size: 12px; font-weight: 800; margin-left: 6px; }
+.pz .trialBox.reject { border-color: #f3c9c6; background: #fdeeee; color: #a3352f; }
+.pz .trialBox.accept { border-color: #bfe3c6; background: #eaf6ec; color: #226a35; }
+.pz .stepsRow { display:flex; justify-content:center; align-items:center; gap:10px; margin-top:14px; flex-wrap:wrap; min-height: 1px; }
+.pz .stepBox {
+background: #f1e6db; border: 2px solid var(--line); border-radius: 10px;
+padding: 8px 14px; font-size: 17px; font-weight: 800; color: var(--accent);
+border-color: var(--accent); background: #fdece2;
+opacity: 0; transform: scale(0.6);
+animation: popStep 0.5s ease forwards;
+}
+.pz .stepBox.good { color: var(--green); border-color: #bfe3c6; background: #eaf6ec; }
+.pz .stepArrow { font-size: 16px; color: #c9bcae; opacity: 0; animation: fadeIn 0.4s ease forwards; }
+@keyframes popStep {
+0% { opacity: 0; transform: scale(0.5); }
+60% { opacity: 1; transform: scale(1.15); }
+100% { opacity: 1; transform: scale(1); }
+}
+.pz .statusBar {
+margin-top: 10px; text-align: center; font-size: 15px; font-weight: 700;
+min-height: 26px; color: var(--accent); transition: color 0.3s ease;
+}
+.pz .statusBar.good { color: var(--green); }
+.pz .formulaBubble { text-align:center; font-size: 16.5px; font-weight: 800; color: var(--accent); min-height: 26px; }
+@keyframes popIn {
+0% { opacity: 0; transform: scale(0.4); }
+60% { opacity: 1; transform: scale(1.3); }
+100% { opacity: 1; transform: scale(1); }
+}
+.pz .pop { animation: popIn 0.6s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.pz .hintsCard { display: flex; flex-direction: column; }
+.pz .hintList { max-height: 30vh; overflow-y: auto; margin-bottom: 10px; scroll-behavior: smooth; }
+.pz .hint-item { display: flex; gap: 10px; padding: 12px 4px; border-bottom: 1px dashed var(--line); animation: fadeIn 0.4s ease; }
+.pz .hint-item:last-child { border-bottom: none; }
+.pz .hint-num {
+flex-shrink: 0; width: 24px; height: 24px; background: var(--accent); color: white;
+border-radius: 50%; display: flex; align-items: center; justify-content: center;
+font-size: 12.5px; font-weight: 700;
+}
+.pz .hint-text { font-size: 14.5px; line-height: 1.5; }
+.pz button {
+width: 100%; padding: 14px; font-size: 15.5px; font-weight: 700; border: none;
+border-radius: 12px; background: var(--navy); color: white; cursor: pointer; transition: opacity 0.2s;
+}
+.pz button:disabled { background: #b7ac9f; cursor: default; }
+.pz button:active { opacity: 0.85; }
+.pz .progress { display: flex; gap: 6px; margin-bottom: 12px; }
+.pz .dot { flex: 1; height: 5px; border-radius: 4px; background: var(--line); transition: background 0.3s; }
+.pz .dot.on { background: var(--accent); }
+.pz .resultCard {
+display:none; background: linear-gradient(135deg,#fdece2,#fbe3d3); border: 1px solid #f0cdb0;
+border-radius: 18px; padding: 26px 18px; text-align:center; margin-bottom: 14px;
+opacity: 0; transform: translateY(8px) scale(0.97); transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.pz .resultCard.show { display:block; opacity:1; transform: translateY(0) scale(1); }
+.pz .resultCard .ans { font-size: 56px; font-weight: 800; color: var(--accent); margin: 8px 0; }
+.pz .resultCard .desc { font-size: 15px; color: #7a5236; line-height: 1.7; }
+.pz .source { font-size: 12px; color: #a89a8c; text-align: center; margin-top: 4px; line-height: 1.6; }
+.pz{background:var(--bg);border-radius:16px;padding:12px 0 4px;margin:12px 0 24px;font-family:inherit;line-height:normal}
+.pz .wrap{padding:0 clamp(10px,3vw,16px) 16px}
+.pz .topBar{position:static}
+.pz .puzzleCard{top:76px}
+.pz h1{margin:2px 0}
+.pz .sub{margin:0}
+.pz button{font-family:inherit}
+.pz .hintList{max-height:26vh}
+.pz{height:auto}
+</style>
+<div class="wrap">
+<div class="topBar">
+<span class="badge">PUZZLE 034</span>
+<h1>🔢 제곱수 숫자 카드</h1>
+<div class="sub">힌트를 하나씩 눌러보면서 숫자 카드로 제곱수를 만들어보자!</div>
+</div>
+<div class="card puzzleCard">
+<svg viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg">
+<rect x="-11.0" y="20" width="40" height="52" rx="8" class="tile" id="tile0"/><text x="9.0" y="54" text-anchor="middle" class="tilenum" id="tilenum0">7</text>
+<rect x="35.0" y="20" width="40" height="52" rx="8" class="tile" id="tile1"/><text x="55.0" y="54" text-anchor="middle" class="tilenum" id="tilenum1">2</text>
+<rect x="81.0" y="20" width="40" height="52" rx="8" class="tile" id="tile2"/><text x="101.0" y="54" text-anchor="middle" class="tilenum" id="tilenum2">1</text>
+<rect x="127.0" y="20" width="40" height="52" rx="8" class="tile" id="tile3"/><text x="147.0" y="54" text-anchor="middle" class="tilenum" id="tilenum3">6</text>
+<rect x="173.0" y="20" width="40" height="52" rx="8" class="tile" id="tile4"/><text x="193.0" y="54" text-anchor="middle" class="tilenum" id="tilenum4">1</text>
+<rect x="219.0" y="20" width="40" height="52" rx="8" class="tile" id="tile5"/><text x="239.0" y="54" text-anchor="middle" class="tilenum" id="tilenum5">7</text>
+<rect x="265.0" y="20" width="40" height="52" rx="8" class="tile" id="tile6"/><text x="285.0" y="54" text-anchor="middle" class="tilenum" id="tilenum6">6</text>
+<rect x="311.0" y="20" width="40" height="52" rx="8" class="tile" id="tile7"/><text x="331.0" y="54" text-anchor="middle" class="tilenum" id="tilenum7">7</text>
+</svg>
+<div class="ruleNote" id="ruleNote"></div>
+<div class="formulaBubble" id="formulaBubble"></div>
+<div class="trialRow" id="trialRow"></div>
+<div class="stepsRow" id="stepsRow"></div>
+<div class="statusBar" id="statusBar"></div>
+</div>
+<div class="resultCard" id="resultCard">
+<div style="font-size:14px;font-weight:700;color:#7a5236;">정답은</div>
+<div class="ans">8</div>
+<div class="desc">숫자 카드를 재배열하면 16,777,216 = 8⁸ 이 돼요.<br>제곱근을 세 번(8제곱근) 구하면<br>16777216 → 4096 → 64 → 8</div>
+</div>
+<div class="card hintsCard">
+<div class="progress" id="progress"></div>
+<div class="hintList" id="hintList"></div>
+<button id="nextBtn" onclick="showNextHint()">💡 힌트 보기 (1/5)</button>
+</div>
+<div class="source">
+출처: 《멘사 창의력 퍼즐 Mensa Mind Maze Quest》 존 브렘너 지음 · 권태은 옮김 · 보누스 (PUZZLE 034)
+</div>
+</div>
+<script>
+const hints = [
+  "제곱수(어떤 정수를 두 번 곱한 수)의 끝자리 숫자는 항상 0,1,4,5,6,9 중 하나만 가능해. (2,3,7,8로 끝나는 제곱수는 없어!) 카드에 있는 숫자(7,2,1,6) 중에서 제곱수의 끝자리가 될 수 있는 숫자는 무엇일까?",
+  "끝자리 후보를 좁혔다면, 이제 이 수가 몇 자리인지 생각해보자. 카드가 8개니까 만들 수는 8자리야. 4자리 수를 제곱하면 7~8자리, 5자리 수를 제곱하면 9~10자리가 나와. 그럼 제곱하기 전의 원래 수는 몇 자리일까?",
+  "문제는 정답의 '8제곱근'(제곱근을 세 번 반복)을 구하라고 했어. 제곱근을 세 번 연속 계산해도 계속 정수가 나오려면, 이 8자리 수는 어떤 정수를 8번 곱한 수(n⁸)여야 해.",
+  "n⁸이 8자리 숫자가 되는 정수 n을 찾아보자. n=7, 8, 9를 각각 8제곱 해서 자릿수와 끝자리를 확인해보자.",
+  "8제곱한 값의 숫자 구성이 카드 숫자(7이 3개, 2가 1개, 1이 2개, 6이 2개)와 정확히 일치하는 n을 찾아보자!"
+];
+const originalDigitCounts = {'7':3,'2':1,'1':2,'6':2};
+const originalDigits = ['7','2','1','6','1','7','6','7'];
+
+let shown = 0;
+const listEl = document.getElementById('hintList');
+const btn = document.getElementById('nextBtn');
+const progressEl = document.getElementById('progress');
+
+for (let i = 0; i < hints.length; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  progressEl.appendChild(d);
+}
+
+function showNextHint() {
+  if (shown >= hints.length) return;
+  const item = document.createElement('div');
+  item.className = 'hint-item';
+  item.innerHTML = `<div class="hint-num">${shown+1}</div><div class="hint-text">${hints[shown]}</div>`;
+  listEl.appendChild(item);
+  progressEl.children[shown].classList.add('on');
+  shown++;
+  listEl.scrollTop = listEl.scrollHeight;
+  if (shown < hints.length) {
+    btn.textContent = `💡 힌트 보기 (${shown+1}/${hints.length})`;
+  } else {
+    btn.textContent = '힌트를 모두 확인했어요 ✅';
+    btn.disabled = true;
+    runAnimation();
+  }
+}
+
+function wait(ms) { return new Promise(res => setTimeout(res, ms)); }
+function setStatus(text, cls) {
+  const s = document.getElementById('statusBar');
+  s.textContent = text;
+  s.className = 'statusBar' + (cls ? (' ' + cls) : '');
+}
+function setFormula(text) { document.getElementById('formulaBubble').textContent = text; }
+function setRule(text) {
+  const el = document.getElementById('ruleNote');
+  el.textContent = text;
+  el.classList.add('show');
+}
+
+function digitCounts(nStr) {
+  const c = {};
+  for (const ch of nStr) c[ch] = (c[ch]||0) + 1;
+  return c;
+}
+function countsMatch(a, b) {
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  for (const k of keys) if ((a[k]||0) !== (b[k]||0)) return false;
+  return true;
+}
+
+async function tryCandidate(n) {
+  const val = Math.pow(n, 8);
+  const valStr = String(val);
+  const lastDigit = valStr[valStr.length-1];
+  const okEnding = ['0','1','4','5','6','9'].includes(lastDigit);
+
+  const box = document.createElement('div');
+  box.className = 'trialBox';
+  box.innerHTML = `${n}⁸ = ${valStr} <span class="endTag">(끝자리 ${lastDigit})</span>`;
+  document.getElementById('trialRow').appendChild(box);
+  setFormula(`${n}의 8제곱을 계산하면 ${valStr} (${valStr.length}자리)`);
+  await wait(1900);
+
+  if (valStr.length !== 8) {
+    box.classList.add('reject');
+    setStatus(`${valStr.length}자리라서 카드 8개와 안 맞아요`, 'bad');
+    await wait(1700);
+    return false;
+  }
+  const match = countsMatch(digitCounts(valStr), originalDigitCounts);
+  if (!match) {
+    box.classList.add('reject');
+    setStatus('8자리이긴 한데, 숫자 구성이 카드와 달라요', 'bad');
+    await wait(1900);
+    return false;
+  }
+  box.classList.add('accept');
+  setStatus('숫자 구성이 카드와 정확히 일치해요! ✅', 'good');
+  await wait(2000);
+  return valStr;
+}
+
+async function runAnimation() {
+  await wait(600);
+  setStatus('제곱수의 끝자리 규칙부터 확인해볼게요', 'blue');
+  await wait(1800);
+
+  setFormula('제곱수의 끝자리는 0,1,4,5,6,9 만 가능해요');
+  await wait(2400);
+
+  // mark tiles: 1 and 6 possible, 2 and 7 impossible
+  const possible = new Set(['1','6']);
+  for (let i=0;i<8;i++) {
+    const tile = document.getElementById(`tile${i}`);
+    if (possible.has(originalDigits[i])) {
+      tile.classList.add('possible');
+    } else {
+      tile.classList.add('impossible');
+    }
+  }
+  setRule('카드 중에서는 1과 6만 끝자리가 될 수 있어요 (2, 7은 불가능!)');
+  setStatus('끝자리 후보: 1 또는 6', 'good');
+  await wait(2800);
+
+  for (let i=0;i<8;i++) {
+    document.getElementById(`tile${i}`).classList.remove('possible','impossible');
+  }
+  document.getElementById('ruleNote').classList.remove('show');
+
+  setFormula('');
+  setStatus('8자리 수가 되려면, 세 번 제곱근을 해도 정수가 나오는 8제곱수(n⁸)여야 해요', 'blue');
+  await wait(3000);
+
+  setStatus('n = 7, 8, 9 를 하나씩 시도해볼게요', 'blue');
+  await wait(1800);
+
+  let found = null;
+  for (const n of [7,9,8]) {
+    const result = await tryCandidate(n);
+    if (result) { found = result; break; }
+  }
+
+  setFormula('');
+  setStatus('카드를 이 숫자로 배열해볼게요', 'blue');
+  await wait(1600);
+
+  for (let i=0;i<8;i++) {
+    const tile = document.getElementById(`tile${i}`);
+    const tnum = document.getElementById(`tilenum${i}`);
+    tile.classList.add('active');
+    await wait(450);
+    tnum.textContent = found[i];
+    tile.classList.remove('active');
+    tile.classList.add('good');
+    await wait(220);
+  }
+
+  setFormula('16777216 = 8 × 8 × 8 × 8 × 8 × 8 × 8 × 8');
+  setStatus('숫자 카드가 16777216 = 8⁸ 을 만들어요!', 'good');
+  await wait(2600);
+
+  setFormula('이제 제곱근을 세 번 구해볼게요 (8제곱근)');
+  await wait(2000);
+
+  const stepsRow = document.getElementById('stepsRow');
+  function addStep(text, isArrow) {
+    const el = document.createElement('div');
+    el.className = isArrow ? 'stepArrow' : 'stepBox';
+    el.textContent = text;
+    stepsRow.appendChild(el);
+    return el;
+  }
+
+  addStep('16777216');
+  await wait(1600);
+
+  setFormula('√16777216 = 4096');
+  await wait(2000);
+  addStep('√', true);
+  await wait(300);
+  addStep('4096');
+  await wait(1800);
+
+  setFormula('√4096 = 64');
+  await wait(2000);
+  addStep('√', true);
+  await wait(300);
+  addStep('64');
+  await wait(1800);
+
+  setFormula('√64 = 8');
+  await wait(2000);
+  addStep('√', true);
+  await wait(300);
+  const last = addStep('8');
+  last.classList.add('good', 'pop');
+  setStatus('정답을 찾았어요! 🎉', 'good');
+  await wait(2400);
+
+  document.getElementById('resultCard').classList.add('show');
+}
+</script></div>

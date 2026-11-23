@@ -2,19 +2,10 @@
 layout: post
 title: "4화. 머릿속에서 돌려 보기 — 회전과 대칭의 퍼즐"
 date: 2026-11-09
+puzzle_include: pz/017.html
 thumbnail: /assets/episodes/017-grid/thumb.png
+lead: "격자무늬 네 개 중 하나만 나머지와 달라요. 어느 것이 다른 하나일까요?"
 ---
-
-격자무늬 네 개 중 하나만 나머지와 달라요. 어느 것이 다른 하나일까요?
-
----
-
-## 지금 바로 풀어 보세요
-
-힌트 버튼을 누르면 한 번에 하나씩 힌트가 열려요. 마지막 힌트 뒤에는 정답이 풀이 과정과 함께 천천히 나타나요.
-
-<iframe class="puzzle-frame" src="/puzzle/demos/017-grid/" title="퍼즐 017" loading="lazy"></iframe>
-<p class="puzzle-open"><a href="/puzzle/demos/017-grid/">새 창에서 크게 열기 ↗</a></p>
 
 그림을 머릿속에서 돌려 보세요. **돌렸을 때 겹치면 같은 그림**이에요. 뒤집어야만 겹치는 그림은 어떨까요?
 

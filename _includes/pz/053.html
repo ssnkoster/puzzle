@@ -1,0 +1,333 @@
+<div class="pz"><style>
+.pz {
+--navy: #1f2a44;
+--accent: #1f9e8e;
+--green: #2f9e58;
+--red: #d1483f;
+--bg: #f2f9f8;
+--card: #ffffff;
+--line: #dcece9;
+}
+.pz * { box-sizing: border-box; }
+.pz, .pz { height: 100%; overflow-x: hidden; }
+.pz {
+margin: 0;
+font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+background: var(--bg);
+color: var(--navy);
+}
+.pz .wrap { width: 100%; max-width: 760px; margin: 0 auto; padding: 0 clamp(10px,4vw,20px) 40px; }
+.pz .topBar { position: sticky; top: 0; z-index: 20; background: var(--bg); padding: 14px 0 10px; }
+.pz .badge {
+display: inline-block; background: var(--navy); color: white; font-weight: 700;
+font-size: 13px; letter-spacing: 0.05em; padding: 6px 14px; border-radius: 999px; margin-bottom: 8px;
+}
+.pz h1 { font-size: clamp(18px, 4.2vw, 22px); margin: 2px 0 2px; }
+.pz .sub { color: #5c6f6c; font-size: 13.5px; margin-bottom: 4px; }
+.pz .card {
+background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(31,42,68,0.05);
+}
+.pz .puzzleCard { position: sticky; top: var(--topbar-h, 92px); z-index: 15; }
+.pz svg { width: 100%; max-width: 420px; display:block; margin: 0 auto; height: auto; overflow: visible; }
+.pz .shape { fill: #1f2a44; transition: fill 0.4s ease, opacity 0.3s ease; }
+.pz .shape.active { fill: var(--accent); }
+.pz .shape.good { fill: var(--green); }
+.pz .eqval { font-size: 22px; font-weight: 800; fill: #1f2a44; dominant-baseline: middle; }
+.pz .eqval.qmark { fill: var(--accent); }
+.pz .legend { display:flex; justify-content:center; gap: 18px; margin-top: 8px; font-size: 13px; color:#5c6f6c; flex-wrap:wrap; }
+.pz .legend span { display:flex; align-items:center; gap: 5px; }
+.pz .legend .lv { font-weight: 800; color: var(--accent); }
+.pz .statusBar {
+margin-top: 8px; text-align: center; font-size: 15px; font-weight: 700;
+min-height: 26px; color: var(--accent); transition: color 0.3s ease;
+}
+.pz .statusBar.good { color: var(--green); }
+.pz .formulaBubble { text-align:center; font-size: 16.5px; font-weight: 800; color: var(--accent); min-height: 26px; }
+.pz .scratchpad {
+margin-top: 10px;
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+justify-content: center;
+min-height: 4px;
+}
+.pz .scratch-line {
+background: #eafaf6;
+border: 1px solid #c8ece2;
+color: #1f6e5f;
+font-weight: 800;
+font-size: 15px;
+padding: 6px 12px;
+border-radius: 10px;
+opacity: 0;
+transform: translateY(6px);
+animation: scratchIn 0.5s ease forwards;
+}
+@keyframes scratchIn {
+from { opacity: 0; transform: translateY(6px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+0% { opacity: 0; transform: scale(0.4); }
+60% { opacity: 1; transform: scale(1.3); }
+100% { opacity: 1; transform: scale(1); }
+}
+.pz .pop { animation: popIn 0.6s ease; }
+.pz .hintsCard { display: flex; flex-direction: column; }
+.pz .hintList { max-height: 30vh; overflow-y: auto; margin-bottom: 10px; scroll-behavior: smooth; }
+.pz .hint-item { display: flex; gap: 10px; padding: 12px 4px; border-bottom: 1px dashed var(--line); animation: fadeIn 0.4s ease; }
+.pz .hint-item:last-child { border-bottom: none; }
+.pz .hint-num {
+flex-shrink: 0; width: 24px; height: 24px; background: var(--accent); color: white;
+border-radius: 50%; display: flex; align-items: center; justify-content: center;
+font-size: 12.5px; font-weight: 700;
+}
+.pz .hint-text { font-size: 14.5px; line-height: 1.5; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.pz button {
+width: 100%; padding: 14px; font-size: 15.5px; font-weight: 700; border: none;
+border-radius: 12px; background: var(--navy); color: white; cursor: pointer; transition: opacity 0.2s;
+}
+.pz button:disabled { background: #a9b8b6; cursor: default; }
+.pz button:active { opacity: 0.85; }
+.pz .progress { display: flex; gap: 6px; margin-bottom: 12px; }
+.pz .dot { flex: 1; height: 5px; border-radius: 4px; background: var(--line); transition: background 0.3s; }
+.pz .dot.on { background: var(--accent); }
+.pz .resultCard {
+display:none; background: linear-gradient(135deg,#eafaf6,#e2f7f1); border: 1px solid #c8ece2;
+border-radius: 18px; padding: 26px 18px; text-align:center; margin-bottom: 14px;
+opacity: 0; transform: translateY(8px) scale(0.97); transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.pz .resultCard.show { display:block; opacity:1; transform: translateY(0) scale(1); }
+.pz .resultCard .ans { font-size: 56px; font-weight: 800; color: var(--accent); margin: 8px 0; }
+.pz .resultCard .desc { font-size: 15px; color: #35695f; line-height: 1.7; }
+.pz .source { font-size: 12px; color: #93a09d; text-align: center; margin-top: 4px; line-height: 1.6; }
+.pz{background:var(--bg);border-radius:16px;padding:12px 0 4px;margin:12px 0 24px;font-family:inherit;line-height:normal}
+.pz .wrap{padding:0 clamp(10px,3vw,16px) 16px}
+.pz .topBar{position:static}
+.pz .puzzleCard{top:76px}
+.pz h1{margin:2px 0}
+.pz .sub{margin:0}
+.pz button{font-family:inherit}
+.pz .hintList{max-height:26vh}
+.pz{height:auto}
+</style>
+<div class="wrap">
+<div class="topBar">
+<span class="badge">PUZZLE 053</span>
+<h1>🔺 도형 방정식 퍼즐</h1>
+<div class="sub">힌트를 하나씩 눌러보면서 ●, ▲, ★의 값을 직접 구해보자!</div>
+</div>
+<div class="card puzzleCard">
+<svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg">
+<circle cx="40" cy="46" r="17.0" class="shape" id="eq1-s0"/>
+<circle cx="92" cy="46" r="17.0" class="shape" id="eq1-s1"/>
+<polygon points="144,28.235 125.3,60.535 162.7,60.535" class="shape" id="eq1-s2"/>
+<polygon points="196,28.235 177.3,60.535 214.7,60.535" class="shape" id="eq1-s3"/>
+<polygon points="248.0,24.9 253.2,38.8 268.0,39.5 256.4,48.7 260.4,63.1 248.0,54.8 235.6,63.1 239.6,48.7 228.0,39.5 242.8,38.8" class="shape" id="eq1-s4"/>
+<text x="310" y="55" class="eqval" id="eq1-val">= 33</text>
+<polygon points="40,102.235 21.299999999999997,134.535 58.7,134.535" class="shape" id="eq2-s0"/>
+<polygon points="92,102.235 73.3,134.535 110.7,134.535" class="shape" id="eq2-s1"/>
+<circle cx="144" cy="120" r="17.0" class="shape" id="eq2-s2"/>
+<polygon points="196.0,98.9 201.2,112.8 216.0,113.5 204.4,122.7 208.4,137.1 196.0,128.8 183.6,137.1 187.6,122.7 176.0,113.5 190.8,112.8" class="shape" id="eq2-s3"/>
+<polygon points="248.0,98.9 253.2,112.8 268.0,113.5 256.4,122.7 260.4,137.1 248.0,128.8 235.6,137.1 239.6,122.7 228.0,113.5 242.8,112.8" class="shape" id="eq2-s4"/>
+<text x="310" y="129" class="eqval" id="eq2-val">= 31</text>
+<polygon points="40.0,172.9 45.2,186.8 60.0,187.5 48.4,196.7 52.4,211.1 40.0,202.8 27.6,211.1 31.6,196.7 20.0,187.5 34.8,186.8" class="shape" id="eq3-s0"/>
+<polygon points="92.0,172.9 97.2,186.8 112.0,187.5 100.4,196.7 104.4,211.1 92.0,202.8 79.6,211.1 83.6,196.7 72.0,187.5 86.8,186.8" class="shape" id="eq3-s1"/>
+<polygon points="144.0,172.9 149.2,186.8 164.0,187.5 152.4,196.7 156.4,211.1 144.0,202.8 131.6,211.1 135.6,196.7 124.0,187.5 138.8,186.8" class="shape" id="eq3-s2"/>
+<circle cx="196" cy="194" r="17.0" class="shape" id="eq3-s3"/>
+<polygon points="248,176.235 229.3,208.535 266.7,208.535" class="shape" id="eq3-s4"/>
+<text x="310" y="203" class="eqval" id="eq3-val">= 34</text>
+<circle cx="40" cy="268" r="17.0" class="shape" id="eq4-s0"/>
+<circle cx="92" cy="268" r="17.0" class="shape" id="eq4-s1"/>
+<polygon points="144,250.235 125.3,282.535 162.7,282.535" class="shape" id="eq4-s2"/>
+<polygon points="196.0,246.9 201.2,260.8 216.0,261.5 204.4,270.7 208.4,285.1 196.0,276.8 183.6,285.1 187.6,270.7 176.0,261.5 190.8,260.8" class="shape" id="eq4-s3"/>
+<text x="310" y="277" class="eqval qmark" id="eq4-val">= ?</text>
+</svg>
+<div class="formulaBubble" id="formulaBubble"></div>
+<div class="statusBar" id="statusBar"></div>
+<div class="scratchpad" id="scratchpad"></div>
+</div>
+<div class="resultCard" id="resultCard">
+<div style="font-size:14px;font-weight:700;color:#35695f;">정답은</div>
+<div class="ans">29</div>
+<div class="desc">● = 9, ▲ = 4, ★ = 7 이었어요.<br>● + ● + ▲ + ★ = 9+9+4+7 = 29</div>
+</div>
+<div class="card hintsCard">
+<div class="progress" id="progress"></div>
+<div class="hintList" id="hintList"></div>
+<button id="nextBtn" onclick="showNextHint()">💡 힌트 보기 (1/6)</button>
+</div>
+<div class="source">
+출처: 《멘사 창의력 퍼즐 Mensa Mind Maze Quest》 존 브렘너 지음 · 권태은 옮김 · 보누스 (PUZZLE 053)
+</div>
+</div>
+<script>
+const hints = [
+  "●, ▲, ★가 각각 어떤 숫자를 나타내는지 알아내야 해. 첫 번째 식(● ● ▲ ▲ ★ = 33)과 두 번째 식(▲ ▲ ● ★ ★ = 31)을 비교해보자. 무엇이 하나 줄고, 무엇이 하나 늘었을까?",
+  "첫 번째 식에서 ●가 2개, 두 번째 식에서는 ●가 1개야 (●가 1개 줄었어). 반대로 ★는 1개에서 2개로 늘었어. 그런데 전체 값은 33에서 31로 2만큼 줄었어. 이걸로 ●와 ★ 중 어느 쪽이 더 큰 수인지 알 수 있을까?",
+  "이제 두 번째 식과 세 번째 식(★ ★ ★ ● ▲ = 34)을 같은 방법으로 비교해보자. 무엇이 늘고 무엇이 줄었는지, 값은 얼마나 바뀌었는지 확인해보자.",
+  "이렇게 비교하면 ●, ▲, ★ 사이의 '차이'를 알 수 있어. 이 차이들을 이용해서 세 모양을 모두 ★(별) 하나로 표현해보자.",
+  "★를 기준으로 표현한 것을 첫 번째 식에 대입하면 별 하나의 값을 구할 수 있어! 별의 값을 구했다면 ●와 ▲의 값도 각각 계산해보자.",
+  "마지막으로 네 번째 줄(● ● ▲ ★ = ?)에 구한 값들을 넣어서 계산해보자."
+];
+
+let shown = 0;
+const listEl = document.getElementById('hintList');
+const btn = document.getElementById('nextBtn');
+const progressEl = document.getElementById('progress');
+
+for (let i = 0; i < hints.length; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  progressEl.appendChild(d);
+}
+
+function showNextHint() {
+  if (shown >= hints.length) return;
+  const item = document.createElement('div');
+  item.className = 'hint-item';
+  item.innerHTML = `<div class="hint-num">${shown+1}</div><div class="hint-text">${hints[shown]}</div>`;
+  listEl.appendChild(item);
+  progressEl.children[shown].classList.add('on');
+  shown++;
+  listEl.scrollTop = listEl.scrollHeight;
+  if (shown < hints.length) {
+    btn.textContent = `💡 힌트 보기 (${shown+1}/${hints.length})`;
+  } else {
+    btn.textContent = '힌트를 모두 확인했어요 ✅';
+    btn.disabled = true;
+    runAnimation();
+  }
+}
+
+function wait(ms) { return new Promise(res => setTimeout(res, ms)); }
+function setStatus(text, cls) {
+  const s = document.getElementById('statusBar');
+  s.textContent = text;
+  s.className = 'statusBar' + (cls ? (' ' + cls) : '');
+}
+function setFormula(text) { document.getElementById('formulaBubble').textContent = text; }
+
+function addScratch(text) {
+  const pad = document.getElementById('scratchpad');
+  const el = document.createElement('div');
+  el.className = 'scratch-line';
+  el.textContent = text;
+  pad.appendChild(el);
+}
+
+function clearScratch() {
+  document.getElementById('scratchpad').innerHTML = '';
+}
+
+function highlightRow(rid, on) {
+  for (let i=0;i<5;i++) {
+    const el = document.getElementById(`${rid}-s${i}`);
+    if (el) {
+      if (on) el.classList.add('active'); else el.classList.remove('active');
+    }
+  }
+}
+
+async function runAnimation() {
+  await wait(600);
+  setStatus('식을 하나씩 비교하면서 값을 찾아볼게요', 'blue');
+  await wait(1800);
+
+  // Step 1: show eq1 and eq2, derive circle - star = 2
+  highlightRow('eq1', true);
+  setFormula('● + ● + ▲ + ▲ + ★ = 33');
+  await wait(2200);
+  highlightRow('eq1', false);
+
+  highlightRow('eq2', true);
+  setFormula('▲ + ▲ + ● + ★ + ★ = 31');
+  await wait(2200);
+  highlightRow('eq2', false);
+
+  setStatus('두 식을 비교해보면: ●가 1개 줄고 ★가 1개 늘면서 값이 2 줄었어요', 'blue');
+  await wait(2600);
+  setFormula('● − ★ = 2');
+  await wait(1400);
+  addScratch('● − ★ = 2');
+  await wait(1800);
+
+  // Step 2: show eq2 and eq3, derive star - triangle = 3
+  highlightRow('eq2', true);
+  setFormula('▲ + ▲ + ● + ★ + ★ = 31');
+  await wait(2000);
+  highlightRow('eq2', false);
+
+  highlightRow('eq3', true);
+  setFormula('★ + ★ + ★ + ● + ▲ = 34');
+  await wait(2200);
+  highlightRow('eq3', false);
+
+  setStatus('이번엔 ▲가 1개 줄고 ★가 1개 늘면서 값이 3 늘었어요', 'blue');
+  await wait(2600);
+  setFormula('★ − ▲ = 3');
+  await wait(1400);
+  addScratch('★ − ▲ = 3');
+  await wait(2000);
+
+  // Step 3: substitute into eq1 to find star
+  setStatus('이제 ●와 ▲를 모두 ★로 바꿔서 첫 번째 식에 넣어볼게요', 'blue');
+  await wait(2400);
+  highlightRow('eq1', true);
+  setFormula('● = ★ + 2   /   ▲ = ★ − 3');
+  await wait(2400);
+  addScratch('● = ★ + 2');
+  await wait(900);
+  addScratch('▲ = ★ − 3');
+  await wait(1800);
+
+  setFormula('(★+2)+(★+2)+(★−3)+(★−3)+★ = 33');
+  await wait(2800);
+  setFormula('5 × ★ − 2 = 33');
+  await wait(2400);
+  setFormula('5 × ★ = 35');
+  await wait(2000);
+  setFormula('★ = 7');
+  addScratch('★ = 7');
+  document.getElementById('eq1-s4').classList.add('good');
+  highlightRow('eq1', false);
+  await wait(2400);
+
+  // Step 4: compute circle and triangle
+  setStatus('★ = 7 을 이용해서 ●와 ▲도 구해볼게요', 'blue');
+  await wait(2200);
+  setFormula('● = ★ + 2 = 7 + 2 = 9');
+  addScratch('● = 9');
+  document.getElementById('eq1-s0').classList.add('good');
+  document.getElementById('eq1-s1').classList.add('good');
+  await wait(2600);
+  setFormula('▲ = ★ − 3 = 7 − 3 = 4');
+  addScratch('▲ = 4');
+  document.getElementById('eq1-s2').classList.add('good');
+  document.getElementById('eq1-s3').classList.add('good');
+  await wait(2600);
+
+  setStatus('● = 9,  ▲ = 4,  ★ = 7', 'good');
+  await wait(2200);
+
+  // Step 5: final answer
+  highlightRow('eq4', true);
+  setFormula('● + ● + ▲ + ★ = 9 + 9 + 4 + 7');
+  await wait(2600);
+  setFormula('9 + 9 + 4 + 7 = 29');
+  const val = document.getElementById('eq4-val');
+  val.style.opacity = 0;
+  await wait(300);
+  val.textContent = '= 29';
+  val.classList.remove('qmark');
+  val.classList.add('pop');
+  val.style.opacity = 1;
+  for (let i=0;i<4;i++) document.getElementById(`eq4-s${i}`).classList.add('good');
+  setStatus('정답을 찾았어요! 🎉', 'good');
+  await wait(2600);
+
+  document.getElementById('resultCard').classList.add('show');
+}
+</script></div>

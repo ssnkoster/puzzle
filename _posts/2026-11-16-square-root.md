@@ -2,19 +2,10 @@
 layout: post
 title: "5화. 어떤 수를 여덟 번 곱하면? — 끝자리와 제곱의 비밀"
 date: 2026-11-16
+puzzle_include: pz/034.html
 thumbnail: /assets/episodes/034-square/thumb.png
+lead: "여덟 개의 숫자를 순서만 바꾸면 어떤 수를 여덟 번 곱한 값이 돼요. 어떤 수일까요?"
 ---
-
-여덟 개의 숫자를 순서만 바꾸면 어떤 수를 여덟 번 곱한 값이 돼요. 어떤 수일까요?
-
----
-
-## 지금 바로 풀어 보세요
-
-힌트 버튼을 누르면 한 번에 하나씩 힌트가 열려요. 마지막 힌트 뒤에는 정답이 풀이 과정과 함께 천천히 나타나요.
-
-<iframe class="puzzle-frame" src="/puzzle/demos/034-square/" title="퍼즐 034" loading="lazy"></iframe>
-<p class="puzzle-open"><a href="/puzzle/demos/034-square/">새 창에서 크게 열기 ↗</a></p>
 
 제곱수의 **끝자리**에는 올 수 없는 숫자가 있어요. 그걸 알면 후보가 확 줄어들어요.
 
